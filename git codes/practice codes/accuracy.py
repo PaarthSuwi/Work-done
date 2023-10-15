@@ -1,3 +1,5 @@
+#This code is used to teach a computer how to make predictions based on data and assess its accuracy in doing so.
+
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
