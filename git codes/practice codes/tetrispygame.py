@@ -1,6 +1,8 @@
+#Tetris game using a different algorithm, we can use a grid-based approach and update the game logic to handle piece movement and collisions.
+
+
 import pygame
 import random
-import time
 
 pygame.init()
 
@@ -23,19 +25,15 @@ SHAPES = [
     [[1, 1, 1], [1, 1, 0]]
 ]
 
-SHAPES_COLORS = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0), (255, 0, 255), (0, 255, 255), (128, 128, 128)]
+SHAPES_COLORS = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0), (255, 0, 255), (0, 255, 255), (128, 128, 128)
 
 # Initialize window
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Tetris")
 
-# Initialize clock
-clock = pygame.time.Clock()
-
 # Initialize game variables
 grid = [[0] * GRID_WIDTH for _ in range(GRID_HEIGHT)]
 current_piece = None
-current_shape = None
 current_color = None
 current_x = 0
 current_y = 0
@@ -49,10 +47,10 @@ def draw_grid():
                 pygame.draw.rect(screen, grid[y][x], (x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE, GRID_SIZE))
 
 def new_piece():
-    global current_piece, current_shape, current_color, current_x, current_y
+    global current_piece, current_color, current_x, current_y
     current_shape = random.choice(SHAPES)
     current_color = SHAPES_COLORS[SHAPES.index(current_shape)]
-    current_piece = [[1 if cell else 0 for cell in row] for row in current_shape]
+    current_piece = current_shape
     current_x = GRID_WIDTH // 2 - len(current_piece[0]) // 2
     current_y = 0
 
@@ -60,17 +58,21 @@ def check_collision(x, y, shape):
     for row in range(len(shape)):
         for col in range(len(shape[row])):
             if shape[row][col]:
-                if x + col < 0 or x + col >= GRID_WIDTH or y + row >= GRID_HEIGHT or grid[y + row][x + col]:
+                if (
+                    x + col < 0
+                    or x + col >= GRID_WIDTH
+                    or y + row >= GRID_HEIGHT
+                    or grid[y + row][x + col]
+                ):
                     return True
     return False
 
 def place_piece():
     global score
     for row in range(len(current_piece)):
-        for col in range(len(current_piece[row])):
+        for col in range(len(current_piece[row]):
             if current_piece[row][col]:
                 grid[current_y + row][current_x + col] = current_color
-    # Check for line clear
     line_cleared = True
     while line_cleared:
         line_cleared = False
@@ -102,7 +104,7 @@ while running:
             if event.key == pygame.K_DOWN and not check_collision(current_x, current_y + 1, current_piece):
                 current_y += 1
             if event.key == pygame.K_UP:
-                rotated = [list(row) for row in zip(*reversed(current_piece))]
+                rotated = [list(row) for row in zip(*reversed(current_piece))
                 if not check_collision(current_x, current_y, rotated):
                     current_piece = rotated
 
@@ -114,6 +116,5 @@ while running:
     screen.fill(BLACK)
     draw_grid()
     pygame.display.update()
-    clock.tick(20)  # Increase the speed for smoother movement
 
 pygame.quit()
