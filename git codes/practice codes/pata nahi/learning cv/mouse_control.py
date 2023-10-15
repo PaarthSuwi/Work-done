@@ -1,3 +1,5 @@
+# This code is designed for a computer vision application using Python's OpenCV library to interact with a webcam and control the mouse cursor. 
+
 import cv2
 import numpy as np
 import pylance
